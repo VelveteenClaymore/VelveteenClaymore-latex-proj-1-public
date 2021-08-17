@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{ulem} 
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{Title}
+\author{Velveteen Claymore}
+\date{August 2021}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The purpose of this document is to display the solution for an integral using Feynman integration. This is basically just me typesetting a problem that was worked out by Flammable Maths on his video "One Sick Integral." Also, I'm too lazy to say all of the technical stuff, so just assume it converges. \\[2\baselineskip] %This skips 2 spaces
+\section{Derivation}
+\begin{equation}
+    I = \int_{0}^{\infty}\frac{dx}{1+x^n} \\
+\end{equation}
+In order to tackle this, we first have to parameterize the function. We will soon use Feynman integration in order to get rid of the denominator. We define a function \(I(t) \); notice that \(I\) is \(I(t)\) at \(t = 0\).
+
+\begin{equation}
+  I(t) := \int_{0}^{\infty}\frac{e^{-t(1+x^n)}}{1+x^n}dx \\  
+\end{equation}
+
+\begin{equation}
+    I(0) = I \nonumber\\ 
+\end{equation}
+We now use Feynman integration and find \(I'(t)\). Then eliminate the denominator  by differentiating under the integral.
+
+\begin{equation*}
+\begin{split}
+    I'(t) & = \frac{d}{dt} \int_{0}^{\infty} \frac{e^{-t(1+x^n)}}{1+x^n}dx \\
+    \to I'(t) & = \int_{0}^{\infty} \frac{1}{1+x^n} \frac{\partial}{\partial t} e^{-t(1+x^n)}dx \\
+    & = - \int_{0}^{\infty} e^{-t(1+x^n)}dx \\
+    & = e^{-t} \int_{0}^{\infty} e^{-tx^n}dx \\
+    \text{Let } \xi & = tx^n \\
+    d\xi & = ntx^{n-1} dx \\
+    \to^{(t>0)} dx & = \frac{d\xi}{nt} x^{1-n} \\
+    \text{Notice }x^{1-n} & = x\cdot x^{-n} \text{, thus } x= \sqrt[n]{\frac{\xi}{t}} \text{ and } x^{-n} = \frac{t}{\xi} \\
+    \to dx & = \frac{1}{n\xi} \sqrt[n]{\frac{\xi}{t}} d\xi \\
+\end{split}
+\end{equation*}
+
+\begin{equation}
+    \to I'(t) = - \frac{e^{-t}}{n\sqrt[n]{t}} \int_{0}^{\infty} \xi^{\frac{1}{n}-1}e^{-\xi} d\xi
+\end{equation}
+Here, we can use Bernoulli's definition of the gamma function.
+
+\begin{equation} \label{gamma}
+    \Gamma (z) = \int_{0}^{\infty} x^{x-1}e^{-x} dx,\quad \mathfrak{R}(z) > 0
+\end{equation}
+From equation \eqref{gamma}, we can rewrite the improper integral.
+
+\begin{equation}
+    I'(t) = - \frac{e^{-t}}{n\sqrt[n]{t}} \Gamma \left (\frac{1}{n}\right )
+\end{equation}
+Recall \(I=I(0)\) and note that \(I \to \infty = 0\). Thus,
+
+\begin{equation} \label{bounds}
+    \int_{0}^{\infty} I'(t) dt = - \int_{0}^{\infty} \frac{e^{-t}}{n\sqrt[n]{t}} \Gamma \left (\frac{1}{n}\right ) dt = I(t \to\infty) - I(0) = -I
+\end{equation}
+Rewrite the improper integral in \eqref{bounds} and cancel the negatives.
+
+\begin{equation}
+    I = \frac{\Gamma (\frac{1}{n})}{n} \int_{0}^{\infty} t^{-\frac{1}{n}} e^{-t} dt
+\end{equation}
+If we rewrite the exponent to: 
+
+\begin{equation}
+    t^{-\frac{1}{n}} = t^{1-\frac{1}{n}-1}
+\end{equation}
+Using equation \eqref{gamma}, we can redefine (8) to be \(\Gamma (1 - \frac{1}{n})\), thus,
+
+\begin{equation}
+    I = \frac{\Gamma (\frac{1}{n})\Gamma (\frac{1}{n}-1)}{n}
+\end{equation}
+Finally, we simplify the answer using Euler's reflection formula.
+
+\begin{equation}
+    \Gamma (z)\Gamma (z-1) = \frac{\pi}{\sin (\pi z)}, \quad z \not\in \mathbb{Z}
+\end{equation}
+Thus,
+
+\begin{equation}
+    I = \frac{\pi}{n} \csc\left (\frac{\pi}{n}\right )
+\end{equation}
+
+Again, credit to Papa Flammy for the work shown. Link to his YouTube channel: https://www.youtube.com/watch?v=m1x-xsvdYCQ
+\end{document}
